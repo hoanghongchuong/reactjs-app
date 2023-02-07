@@ -3,7 +3,8 @@ import {Outlet} from 'react-router-dom'
 
 function FormIndex(props) {
     return (
-        <div> form index
+        <div>
+            form index
             <Outlet />
         </div>
 
