@@ -5,12 +5,15 @@ import Profile from '~/pages/Profile';
 import { HeaderOnly } from '~/components/Layout';
 import DashboardIndex from '~/pages/admin/dashboard/DashboardIndex';
 import FormIndex from '~/pages/admin/form/FormIndex';
-import Table from '~/pages/admin/form/Table';
+// import Table from '~/pages/admin/form/Table';
 import Button from '~/pages/admin/form/Button';
 import { Route } from 'react-router-dom';
-import DefaultLayout from '~/components/Layout/DefaultLayout';
-import { Fragment } from 'react';
-import AdminLayout from '~/components/Layout/admin_layout/AdminLayout';
+// import DefaultLayout from '~/components/Layout/DefaultLayout';
+// import { Fragment } from 'react';
+// import AdminLayout from '~/components/Layout/admin_layout/AdminLayout';
+import Analytics from '~/pages/admin/analytics/Analytics';
+import Customer from '~/pages/admin/customer/Customer';
+import PageWrapperAdmin from '~/components/Layout/admin_layout/PageWrapperAdmin';
 
 const publicRoutes = [
     { path: '/login', component: Login, layout: null },
@@ -21,88 +24,83 @@ const publicRoutes = [
 
 const privateRoutes = [];
 
-const appRoutes = [
-    { path: '/login', component: Login, layout: null },
-    { path: '/', component: Home },
-    { path: '/profile', component: Profile, layout: HeaderOnly },
-    { path: '/following', component: Following },
+const adminPrivateRoute = [
     {
+        index: true,
         path: '/admin',
-        component: DashboardIndex,
-        layout: AdminLayout,
-        state: 'dashboard',
+        element: <DashboardIndex />,
+        state: 'home',
         sidebarProps: {
-            displayText: 'dashboard',
-            icon: '<i class="bx bxs-dashboard"></i>',
+            displayText: 'Dashboard index',
+            icon: 'bx bxs-dashboard',
+        },
+    },
+    {
+        path: 'analytics',
+        element: <Analytics />,
+        state: 'admin.analytics',
+        sidebarProps: {
+            displayText: 'Analytics',
+            icon: 'bx bxs-report',
+        },
+    },
+    {
+        path: 'customer',
+        element: <Customer />,
+        state: 'customer',
+        sidebarProps: {
+            displayText: 'Customer',
+            icon: 'bx bxs-user-plus',
+        },
+    },
+    {
+        path: 'form',
+        element: <FormIndex />,
+        state: 'form',
+        sidebarProps: {
+            displayText: 'FormIndex',
+            icon: 'bx bx-table',
         },
         child: [
             {
-                index: true,
-                component: DashboardIndex,
-                state: 'dashboard.index',
-            },
-            {
-                path: 'form',
-                component: FormIndex,
-                state: 'form',
+                path: '/admin/form/button',
+                element: <Button />,
+                state: 'form.button',
                 sidebarProps: {
-                    displayText: 'Form',
-                    icon: '<i class="bx bxs-dashboard"></i>',
+                    displayText: 'Button',
                 },
-                child: [
-                    // {
-                    //     path: 'table',
-                    //     component: Table,
-                    //     state: 'form.table',
-                    //     sidebarProps: {
-                    //         displayText: 'Table',
-                    //     },
-                    // },
-                    {
-                        path: 'button',
-                        component: Button,
-                        state: 'form.button',
-                        sidebarProps: {
-                            displayText: 'Button',
-                        },
-                    },
-                ],
             },
-            {
-                path: 'table',
-                component: Table,
-                state: 'admin.table',
-                sidebarProps: {
-                    displayText: 'Table',
-                    icon: '<i class="bx bx-table"></i>'
-                }
-            }
         ],
     },
 ];
 
 const generateRoute = (routes) => {
     return routes.map((route, index) => {
-        const Page = route.component;
-        let Layout = DefaultLayout;
-        if (route.layout) {
-            Layout = route.layout;
-        } else if (route.layout === null) {
-            Layout = Fragment;
-        }
         return (
             route.index ? (
-                <Route index path={route.path} element={<Layout><Page /></Layout>} key={index} />
+                <Route
+                    index
+                    path={route.path}
+                    element={<PageWrapperAdmin state={route.state}>
+                        {route.element}
+                    </PageWrapperAdmin>}
+                    key={index}
+                />
             ) : (
 
-                <Route path={route.path} element={<Layout><Page /></Layout>} key={index}>
+                <Route
+                    path={route.path}
+                    element={<PageWrapperAdmin state={route.child ? undefined : route.state}>
+                        {route.element}
+                    </PageWrapperAdmin>}
+                    key={index}>
                     {route.child && generateRoute(route.child)}
                 </Route>
             )
-        )
+        );
     });
 };
 
-export { publicRoutes, privateRoutes, appRoutes };
+export { publicRoutes, privateRoutes, adminPrivateRoute };
 
-export const routes = generateRoute(appRoutes);
+export const routesAdminPrivate = generateRoute(adminPrivateRoute);
