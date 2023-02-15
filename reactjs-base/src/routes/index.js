@@ -1,6 +1,6 @@
 import Home from '~/pages/Home';
 import Following from '~/pages/Following';
-import Login from '~/pages/Login';
+import Login from '~/pages/login';
 import Profile from '~/pages/Profile';
 import { HeaderOnly } from '~/components/Layout';
 import DashboardIndex from '~/pages/admin/dashboard/DashboardIndex';

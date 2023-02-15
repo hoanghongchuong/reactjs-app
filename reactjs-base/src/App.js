@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import PageNotFound from '~/pages/not_found/PageNotFound';
 import AdminLayout from '~/components/Layout/admin_layout/AdminLayout';
-import Login from '~/pages/Login';
+import Login from '~/pages/login';
 import Home from '~/pages/Home';
 import DefaultLayout from '~/components/Layout/DefaultLayout';
 import Profile from '~/pages/Profile';
@@ -16,7 +16,8 @@ function App() {
                     <Route path='/' element={<DefaultLayout><Home /></DefaultLayout>} />
                     <Route path='/profile' element={<DefaultLayout><Profile /></DefaultLayout>} />
                     <Route path='/following' element={<DefaultLayout><Following /></DefaultLayout>} />
-                    <Route path='login' element={<Login />} />
+
+                    <Route path='/admin/login' element={<Login />} />
 
                     <Route path='/admin' element={<AdminLayout />}>
                         {routesAdminPrivate}

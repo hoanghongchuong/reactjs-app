@@ -15,7 +15,7 @@ function SidebarItem({ item }) {
         if(appState.includes(item.state)) {
             setOpen(true)
         }
-    })
+    }, [appState, item])
 
 
     if (item.child) {
